@@ -7,10 +7,15 @@ export type DocItem = {
   children?: DocItem[]
 }
 
+const childrenMap: Record<string, DocItem[]> = {
+  'Git': require('./data/sub/git').default,
+  'Tailwind CSS': require('./data/sub/tailwind').default,
+}
+
 const items: DocItem[] = [...list]
 for (const item of items) {
-  if (item.name === 'Git') {
-    item.children = require('./data/sub/git').default
+  if (childrenMap[item.name]) {
+    item.children = childrenMap[item.name]
   }
 }
 

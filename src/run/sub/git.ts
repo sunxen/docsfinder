@@ -1,30 +1,26 @@
-import axios from 'axios';
 import * as cheerio from 'cheerio';
 import * as fs from 'fs';
+import { getHTML } from '../getHTML';
 
 async function run() {
-  const userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36'
-  const url = 'https://git-scm.com/docs';
-  const { data } = await axios.get(url, {
-    headers: {
-      'User-Agent': userAgent,
-    },
-  });
-
-  const $ = cheerio.load(data);
+  const base = 'https://git-scm.com';
+  const html = await getHTML(`${base}/docs`);
+  const $ = cheerio.load(html);
   let list = $('.reference-menu a[href]').toArray()
   .map((item) => {
     const $item = $(item);
     return {
       name: $item.text(),
-      link: `https://git-scm.com${$item.attr('href')}`,
+      link: `${base}${$item.attr('href')}`,
     };
   });
+
   // uniqueList
   list = list.filter((item, index) => {
     return list.findIndex((subItem) => subItem.name === item.name) === index;
   });
 
+  // sort
   const kwOrder = [
     "init",
     "clone",
@@ -44,7 +40,6 @@ async function run() {
     "tag",
     "fetch"
   ]
-  // sort by kwOrder
   list.sort((a, b) => {
     const aIndex = kwOrder.indexOf(a.name);
     const bIndex = kwOrder.indexOf(b.name);

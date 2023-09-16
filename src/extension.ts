@@ -10,7 +10,10 @@ mainList.forEach((item) => {
 		label: item.name,
 	});
 	linkMap.set(item.name, item.link);
-	// children
+});
+
+// children
+mainList.forEach((item) => {
 	if (item.children) {
 		item.children.forEach((subItem) => {
 			allItems.push({
