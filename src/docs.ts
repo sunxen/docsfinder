@@ -14,6 +14,9 @@ const childrenMap: Record<string, DocItem[]> = {
   'React': require('./data/sub/react').default,
   'Vue': require('./data/sub/vue').default,
   'Vite': require('./data/sub/vite').default,
+  'Node.js': require('./data/sub/nodejs').default,
+  'Next.js': require('./data/sub/nextjs').default,
+  'Nuxt.js': require('./data/sub/nuxtjs').default,
 }
 
 const items: DocItem[] = [...list]
