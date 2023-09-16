@@ -66,6 +66,11 @@ export default [
     "link": "https://git-scm.com/docs"
   },
   {
+    "name": "Bash",
+    "alias": "Shell",
+    "link": "https://www.gnu.org/software/bash/"
+  },
+  {
     "name": "webpack",
     "link": "https://webpack.js.org/concepts/"
   },
@@ -164,10 +169,6 @@ export default [
   {
     "name": "Backbone.js",
     "link": "https://backbonejs.org/"
-  },
-  {
-    "name": "Bash",
-    "link": "https://www.gnu.org/software/bash/"
   },
   {
     "name": "Bluebird",

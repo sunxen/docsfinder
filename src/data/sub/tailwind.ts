@@ -57,7 +57,8 @@ export default [
   },
   {
     "name": "Content",
-    "link": "https://tailwindcss.com/docs/content-configuration"
+    "link": "https://tailwindcss.com/docs/content-configuration",
+    "description": "content-configuration"
   },
   {
     "name": "Theme",
@@ -404,6 +405,11 @@ export default [
     "link": "https://tailwindcss.com/docs/hyphens"
   },
   {
+    "name": "Content",
+    "link": "https://tailwindcss.com/docs/content",
+    "description": "content"
+  },
+  {
     "name": "Background Attachment",
     "link": "https://tailwindcss.com/docs/background-attachment"
   },
@@ -726,13 +732,5 @@ export default [
   {
     "name": "Typography",
     "link": "https://tailwindcss.com/docs/typography-plugin"
-  },
-  {
-    "name": "Forms",
-    "link": "https://tailwindcss.comhttps://github.com/tailwindlabs/tailwindcss-forms"
-  },
-  {
-    "name": "Container Queries",
-    "link": "https://tailwindcss.comhttps://github.com/tailwindlabs/tailwindcss-container-queries"
   }
 ]

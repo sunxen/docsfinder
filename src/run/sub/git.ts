@@ -1,6 +1,6 @@
 import * as cheerio from 'cheerio';
 import * as fs from 'fs';
-import { getHTML } from '../getHTML';
+import { getHTML, makeListUnique } from '../utils';
 
 async function run() {
   const base = 'https://git-scm.com';
@@ -10,14 +10,9 @@ async function run() {
   .map((item) => {
     const $item = $(item);
     return {
-      name: $item.text(),
+      name: $item.text().trim(),
       link: `${base}${$item.attr('href')}`,
     };
-  });
-
-  // uniqueList
-  list = list.filter((item, index) => {
-    return list.findIndex((subItem) => subItem.name === item.name) === index;
   });
 
   // sort
@@ -51,6 +46,8 @@ async function run() {
     }
     return aIndex - bIndex;
   });
+
+  list = makeListUnique(list);
 
   // save to /data
   const content = `export default ${JSON.stringify(list, null, 2)}`

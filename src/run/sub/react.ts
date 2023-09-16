@@ -3,14 +3,10 @@ import * as fs from 'fs';
 import { getHTML, makeListUnique } from '../utils';
 
 async function run() {
-  const base = 'https://tailwindcss.com';
-  const html = await getHTML(`${base}/docs/installation`);
+  const base = 'https://react.dev';
+  const html = await getHTML(`${base}/reference/react`);
   const $ = cheerio.load(html);
-  let list = $('#nav li.mt-12 a[href]').toArray()
-  .filter((item) => {
-    const $item = $(item);
-    return $item.attr('href')?.startsWith('/docs/');
-  })
+  let list = $('aside nav a[href]').toArray()
   .map((item) => {
     const $item = $(item);
     return {
@@ -19,11 +15,11 @@ async function run() {
     };
   });
 
-  list = makeListUnique(list, `${base}/docs/`);
+  list = makeListUnique(list, `${base}/reference/`);
 
   // save to /data
   const content = `export default ${JSON.stringify(list, null, 2)}`
-  fs.writeFileSync('./src/data/sub/tailwind.ts', content);
+  fs.writeFileSync('./src/data/sub/react.ts', content);
 }
 
 run();

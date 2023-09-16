@@ -3,23 +3,34 @@
 import * as vscode from 'vscode';
 import mainList from './docs'
 
-const allItems: vscode.QuickPickItem[] = [];
 const linkMap = new Map<string, string>();
+function saveLink(label: string, description: string | undefined, link: string) {
+	const key = `${label} (${description})`
+	linkMap.set(key, link);
+}
+function getLink(item: vscode.QuickPickItem) {
+	const key = `${item.label} (${item.description})`
+	return linkMap.get(key);
+}
+
+const allItems: vscode.QuickPickItem[] = [];
 mainList.forEach((item) => {
 	allItems.push({
 		label: item.name,
 	});
-	linkMap.set(item.name, item.link);
+	saveLink(item.name, item.description, item.link);
 });
 
 // children
 mainList.forEach((item) => {
 	if (item.children) {
 		item.children.forEach((subItem) => {
+			const label = item.name + ': ' + subItem.name;
 			allItems.push({
-				label: item.name + ': ' + subItem.name,
+				label,
+				description: subItem.description,
 			});
-			linkMap.set(item.name + ': ' + subItem.name, subItem.link);
+			saveLink(label, subItem.description, subItem.link);
 		});
 	}
 });
@@ -44,8 +55,7 @@ export function activate(context: vscode.ExtensionContext) {
 		quickPick.items = allItems;
 		quickPick.onDidChangeSelection(selection => {
 			if (selection[0]) {
-				const name = selection[0].label;
-				const link = linkMap.get(name);
+				const link = getLink(selection[0]);
 				if (link) {
 					vscode.env.openExternal(vscode.Uri.parse(link));
 				}
