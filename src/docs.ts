@@ -12,6 +12,8 @@ const childrenMap: Record<string, DocItem[]> = {
   'Git': require('./data/sub/git').default,
   'Tailwind CSS': require('./data/sub/tailwind').default,
   'React': require('./data/sub/react').default,
+  'Vue': require('./data/sub/vue').default,
+  'Vite': require('./data/sub/vite').default,
 }
 
 const items: DocItem[] = [...list]
