@@ -1,8 +1,10 @@
 {
-  "name": "hello",
-  "displayName": "hello",
+  "name": "docsfinder",
+  "displayName": "Docs Finder",
   "description": "",
   "version": "0.0.1",
+  "publisher": "sunxen",
+  "icon": "logo.png",
   "engines": {
     "vscode": "^1.82.0"
   },
@@ -14,9 +16,15 @@
   "contributes": {
     "commands": [
       {
-        "key": "cmd+shift+k",
-        "command": "hello.helloWorld",
-        "title": "Hello World"
+        "command": "docsfinder.open",
+        "title": "Docs Finder"
+      }
+    ],
+    "keybindings":[
+      {
+        "command": "docsfinder.open",
+        "key": "ctrl+shift+k",
+        "mac": "cmd+shift+k"
       }
     ]
   },
