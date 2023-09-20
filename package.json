@@ -5,6 +5,10 @@
   "version": "0.0.1",
   "publisher": "sunxen",
   "icon": "logo.png",
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/sunxen/docsfinder"
+  },
   "engines": {
     "vscode": "^1.82.0"
   },
@@ -29,6 +33,7 @@
     ]
   },
   "scripts": {
+    "build": "vsce package --yarn --baseImagesUrl https://raw.githubusercontent.com/sunxen/docsfinder/main/",
     "vscode:prepublish": "pnpm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
