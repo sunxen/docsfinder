@@ -4,6 +4,7 @@ export type DocItem = {
   name: string
   link: string
   alias?: string
+  npm?: string
   description?: string
   children?: DocItem[]
 }

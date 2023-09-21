@@ -19,16 +19,19 @@ export default [
   {
     "name": "Next.js",
     "alias": "Next",
+    "npm": "next",
     "link": "https://nextjs.org/docs"
   },
   {
     "name": "Nuxt.js",
     "alias": "Nuxt",
+    "npm": "nuxt",
     "link": "https://nuxt.com/docs"
   },
   {
     "name": "Tailwind CSS",
     "alias": "Tailwind",
+    "npm": "tailwindcss",
     "link": "https://tailwindcss.com/docs/installation"
   },
   {

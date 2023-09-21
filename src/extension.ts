@@ -47,8 +47,8 @@ async function updateItemsWithContext() {
 
 	const set = new Set();
 	mainList.forEach((item) => {
-		const matchPkgName = (item.alias || item.name).toLocaleLowerCase()
-		set.add(matchPkgName);
+		const npmName = (item.npm || item.name).toLocaleLowerCase()
+		set.add(npmName);
 	});
 	const pkgItems: vscode.QuickPickItem[] = []
 	const pkgs = await getProjectPkgs(vscode.window.activeTextEditor?.document.fileName || '');
