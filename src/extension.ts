@@ -53,6 +53,9 @@ async function updateItemsWithContext() {
 	const pkgItems: vscode.QuickPickItem[] = []
 	const pkgs = await getProjectPkgs(vscode.window.activeTextEditor?.document.fileName || '');
 	pkgs.forEach((pkg) => {
+		if (pkg.startsWith('@types/')) {
+			return;
+		}
 		if (!set.has(pkg.toLocaleLowerCase())) {
 			pkgItems.push({
 				label: pkg,

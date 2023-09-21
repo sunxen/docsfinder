@@ -7,7 +7,7 @@ import * as path from 'path';
  */
 export async function getProjectPkgs(targetFile: string) {
   const pkgPath = getPkgPath(targetFile)
-  if(!pkgPath){
+  if (!pkgPath) {
     return []
   }
   const pkg = require(path.join(pkgPath, 'package.json'))
@@ -16,17 +16,17 @@ export async function getProjectPkgs(targetFile: string) {
   return [...deps, ...devDeps]
 }
 
-function getPkgPath(targetFile: string): string{
+function getPkgPath(targetFile: string): string {
   const dirList: string[] = []
   let dir = path.dirname(targetFile)
-  while(!dirList.includes(dir)){
-      dirList.push(dir)
-      dir = path.dirname(dir)
+  while (!dirList.includes(dir)) {
+    dirList.push(dir)
+    dir = path.dirname(dir)
   }
-  for (const item of dirList){
-      if(fs.existsSync(path.join(item, 'package.json'))){
-          return item
-      }
+  for (const item of dirList) {
+    if (fs.existsSync(path.join(item, 'package.json'))) {
+      return item
+    }
   }
   return ''
 }
