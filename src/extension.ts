@@ -71,6 +71,11 @@ export function activate(context: vscode.ExtensionContext) {
 	let disposable = vscode.commands.registerCommand('docsfinder.open', () => {
 		const quickPick = vscode.window.createQuickPick();
 		quickPick.placeholder = 'Search docs';
+		// get selection text
+		const selection = vscode.window.activeTextEditor?.document.getText(vscode.window.activeTextEditor?.selection) || '';
+		if (selection.length < 100) {
+			quickPick.value = selection;
+		}
 		quickPick.items = allItems;
 		quickPick.onDidChangeSelection(selection => {
 			if (selection[0]) {

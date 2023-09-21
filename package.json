@@ -21,9 +21,16 @@
     "commands": [
       {
         "command": "docsfinder.open",
-        "title": "Docs Finder"
+        "title": "Docs Finder..."
       }
     ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "docsfinder.open"
+        }
+      ]
+    },
     "keybindings":[
       {
         "command": "docsfinder.open",
