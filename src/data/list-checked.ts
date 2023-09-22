@@ -1,30 +1,35 @@
 export default [
   {
     "name": "React",
+    "iframe": true,
     "link": "https://react.dev/reference/react"
   },
   {
     "name": "Vue",
-    "link": "https://vuejs.org/guide/introduction.html"
+        "link": "https://vuejs.org/guide/introduction.html"
   },
   {
     "name": "Vite",
+    "iframe": true,
     "link": "https://vitejs.dev/guide/"
   },
   {
     "name": "Node.js",
     "alias": "Node",
+    "iframe": true,
     "link": "https://nodejs.org/api/"
   },
   {
     "name": "Next.js",
     "alias": "Next",
     "npm": "next",
+    "iframe": true,
     "link": "https://nextjs.org/docs"
   },
   {
     "name": "Nuxt.js",
     "alias": "Nuxt",
+    "iframe": true,
     "npm": "nuxt",
     "link": "https://nuxt.com/docs"
   },
@@ -32,11 +37,13 @@ export default [
     "name": "Tailwind CSS",
     "alias": "Tailwind",
     "npm": "tailwindcss",
+    "iframe": true,
     "link": "https://tailwindcss.com/docs/installation"
   },
   {
     "name": "TypeScript",
     "alias": "TS",
+    "iframe": true,
     "link": "https://www.typescriptlang.org/docs/"
   },
   {
@@ -75,6 +82,7 @@ export default [
   },
   {
     "name": "webpack",
+    "iframe": true,
     "link": "https://webpack.js.org/concepts/"
   },
   {
@@ -163,7 +171,8 @@ export default [
   },
   {
     "name": "Axios",
-    "link": "hthttps://axios-http.com/"
+    "iframe": true,
+    "link": "https://axios-http.com/docs/intro"
   },
   {
     "name": "Babel",

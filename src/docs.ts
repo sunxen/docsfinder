@@ -5,6 +5,7 @@ export type DocItem = {
   link: string
   alias?: string
   npm?: string
+  iframe?: boolean
   description?: string
   children?: DocItem[]
 }
@@ -24,6 +25,9 @@ const items: DocItem[] = [...list]
 for (const item of items) {
   if (childrenMap[item.name]) {
     item.children = childrenMap[item.name]
+    item.children.forEach((child) => {
+      child.iframe = item.iframe
+    })
   }
 }
 

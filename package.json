@@ -18,6 +18,20 @@
   "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
+    "configuration": {
+        "title": "Docs Finder",
+        "properties": {
+            "docsFinder.viewerType": {
+                "type": "string",
+                "default": "VS Code - column two",
+                "enum": [
+                    "VS Code - column one",
+                    "Browser"
+                ],
+                "description": "Open docs in VS Code (if available) or Browser"
+            }
+        }
+    },
     "commands": [
       {
         "command": "docsfinder.open",

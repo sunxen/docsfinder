@@ -1,37 +1,30 @@
 import * as vscode from 'vscode';
-import mainList from './docs'
+import mainList, { DocItem } from './docs'
 import { getProjectPkgs } from './npm-helper';
+import { openWeb } from './web';
 
-const linkMap = new Map<string, string>();
+const docQuickPickMap = new Map<vscode.QuickPickItem, DocItem>();
 
-function saveLink(label: string, description: string | undefined, link: string) {
-	const key = `${label} (${description || ''})`
-	linkMap.set(key, link);
-}
-
-function getLink(item: vscode.QuickPickItem) {
-	const key = `${item.label} (${item.description || ''})`
-	return linkMap.get(key);
-}
-
-const allItems: vscode.QuickPickItem[] = [];
-mainList.forEach((item) => {
-	allItems.push({
-		label: item.name,
-	});
-	saveLink(item.name, item.description, item.link);
+const qpItems: vscode.QuickPickItem[] = [];
+mainList.forEach((doc) => {
+	const qp: vscode.QuickPickItem = {
+		label: doc.name,
+	}
+	qpItems.push(qp);
+	docQuickPickMap.set(qp, doc)
 });
 
 // children
-mainList.forEach((item) => {
-	if (item.children) {
-		item.children.forEach((subItem) => {
-			const label = item.name + ': ' + subItem.name;
-			allItems.push({
+mainList.forEach((doc) => {
+	if (doc.children) {
+		doc.children.forEach((subDoc) => {
+			const label = doc.name + ': ' + subDoc.name;
+			const qp = {
 				label,
-				description: subItem.description,
-			});
-			saveLink(label, subItem.description, subItem.link);
+				description: subDoc.description,
+			}
+			qpItems.push(qp);
+			docQuickPickMap.set(qp, subDoc)
 		});
 	}
 });
@@ -46,8 +39,8 @@ async function updateItemsWithContext() {
 	needUpdate = false;
 
 	const set = new Set();
-	mainList.forEach((item) => {
-		const npmName = (item.npm || item.name).toLocaleLowerCase()
+	mainList.forEach((doc) => {
+		const npmName = (doc.npm || doc.name).toLocaleLowerCase()
 		set.add(npmName);
 	});
 	const pkgItems: vscode.QuickPickItem[] = []
@@ -57,21 +50,24 @@ async function updateItemsWithContext() {
 			return;
 		}
 		if (!set.has(pkg.toLocaleLowerCase())) {
-			pkgItems.push({
+			const qp = {
 				label: pkg,
-			});
-			saveLink(pkg, '', `https://www.npmjs.com/package/${pkg}`);
+			}
+			const doc = { name: pkg, link: `https://www.npmjs.com/package/${pkg}` }
+			pkgItems.push();
+			docQuickPickMap.set(qp, doc)
 		}
 	});
 	if (pkgItems.length > 0) {
-		allItems.push(...pkgItems);
+		qpItems.push(...pkgItems);
 		return true;
 	}
 	return false;
 }
 
-export function activate(context: vscode.ExtensionContext) {	
+export function activate(context: vscode.ExtensionContext) {
 	let disposable = vscode.commands.registerCommand('docsfinder.open', () => {
+		const viewerType = vscode.workspace.getConfiguration('docsFinder').viewerType;
 		const quickPick = vscode.window.createQuickPick();
 		quickPick.placeholder = 'Search docs';
 		// get selection text
@@ -79,12 +75,15 @@ export function activate(context: vscode.ExtensionContext) {
 		if (selection.length < 100) {
 			quickPick.value = selection;
 		}
-		quickPick.items = allItems;
+		quickPick.items = qpItems;
 		quickPick.onDidChangeSelection(selection => {
-			if (selection[0]) {
-				const link = getLink(selection[0]);
-				if (link) {
-					vscode.env.openExternal(vscode.Uri.parse(link));
+			const qp = selection[0]
+			const doc = docQuickPickMap.get(qp);
+			if (doc) {
+				if (viewerType === 'Browser' || !doc.iframe) {
+					vscode.env.openExternal(vscode.Uri.parse(doc.link));
+				} else {
+					openWeb(context, doc.link, doc.name, viewerType === 'VS Code - column one')
 				}
 			}
 			quickPick.hide();
@@ -94,7 +93,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 		updateItemsWithContext().then((needRefresh) => {
 			if (needRefresh) {
-				quickPick.items = allItems;
+				quickPick.items = qpItems;
 			}
 		});
 	});
