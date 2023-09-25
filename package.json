@@ -6,8 +6,8 @@
   "publisher": "sunxen",
   "icon": "logo.png",
   "repository": {
-      "type": "git",
-      "url": "https://github.com/sunxen/docsfinder"
+    "type": "git",
+    "url": "https://github.com/sunxen/docsfinder"
   },
   "engines": {
     "vscode": "^1.82.0"
@@ -16,21 +16,21 @@
     "Other"
   ],
   "activationEvents": [],
-  "main": "./out/extension.js",
+  "main": "./out/main.js",
   "contributes": {
     "configuration": {
-        "title": "Docs Finder",
-        "properties": {
-            "docsFinder.viewerType": {
-                "type": "string",
-                "default": "VS Code - column two",
-                "enum": [
-                    "VS Code - column one",
-                    "Browser"
-                ],
-                "description": "Open docs in VS Code (if available) or Browser"
-            }
+      "title": "Docs Finder",
+      "properties": {
+        "docsFinder.viewerType": {
+          "type": "string",
+          "default": "VS Code - column two",
+          "enum": [
+            "VS Code - column one",
+            "Browser"
+          ],
+          "description": "Open docs in VS Code (if available) or Browser"
         }
+      }
     },
     "commands": [
       {
@@ -45,7 +45,7 @@
         }
       ]
     },
-    "keybindings":[
+    "keybindings": [
       {
         "command": "docsfinder.open",
         "key": "ctrl+shift+k",
@@ -55,7 +55,8 @@
   },
   "scripts": {
     "build": "vsce package --yarn --baseImagesUrl https://raw.githubusercontent.com/sunxen/docsfinder/main/",
-    "vscode:prepublish": "pnpm run compile",
+    "vscode:prepublish": "npm run esbuild-base -- --minify",
+    "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/main.js --external:vscode --format=cjs --platform=node",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "pretest": "pnpm run compile && pnpm run lint",
@@ -70,13 +71,14 @@
     "@typescript-eslint/eslint-plugin": "^5.59.1",
     "@typescript-eslint/parser": "^5.59.1",
     "@vscode/test-electron": "^2.3.0",
+    "cheerio": "1.0.0-rc.12",
+    "esbuild": "^0.19.3",
     "eslint": "^8.39.0",
     "glob": "^8.1.0",
     "mocha": "^10.2.0",
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "axios": "^1.5.0",
-    "cheerio": "1.0.0-rc.12"
+    "axios": "^1.5.0"
   }
 }
