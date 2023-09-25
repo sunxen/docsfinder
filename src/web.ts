@@ -1,4 +1,6 @@
 import * as vscode from 'vscode';
+import { showGithubReadme } from './github';
+import { DocItem } from './docs';
 
 function getDefaultTheme() {
   const themeName = vscode.workspace.getConfiguration().get('workbench.colorTheme');
@@ -11,61 +13,39 @@ function getDefaultTheme() {
 	return 'light';
 }
 
-export function openWeb(context: vscode.ExtensionContext, url: string, label: string, columnOne = false) {
+export function openDoc(doc: DocItem, viewerType: string) {
+    const isNpm = doc.link.includes('npmjs.com');
+
+    if (viewerType === 'Browser' || (!isNpm && !doc.iframe)) {
+        vscode.env.openExternal(vscode.Uri.parse(doc.link));
+        return;
+    }
+    
+    const column = viewerType === 'VS Code - column one' ? vscode.ViewColumn.One : vscode.ViewColumn.Two;
     // TODO singleton
     const panel = vscode.window.createWebviewPanel(
         'docsfinder',
-        label,
-        columnOne ? vscode.ViewColumn.One : vscode.ViewColumn.Two,
+        doc.name,
+        column,
         {
             enableScripts: true,
             retainContextWhenHidden: true,
         }
     );
-
-    // And set its HTML content
-    panel.webview.html = getWebviewContent(url);
-
-    // Handle messages from the webview
-    panel.webview.onDidReceiveMessage(
-        message => {
-            // set state
-            if (message.type === 'setState') {
-                const state: any = context.globalState.get('state') || {};
-                for (const key of Object.keys(message.state)) {
-                    state[key] = message.state[key];
-                }
-                context.globalState.update('state', state);
-            }
-            // get state
-            if (message.type === 'getState') {
-                const state = context.globalState.get('state');
-                panel.webview.postMessage({
-                    type: 'loadState',
-                    state,
-                });
-            }
-            // copy
-            if (message.type === 'copy') {
-                vscode.env.clipboard.writeText(message.text);
-            }
-            // open browser
-            if (message.type === 'openBrowser') {
-                vscode.env.openExternal(vscode.Uri.parse(message.url));
-            }
-        },
-        undefined,
-        context.subscriptions
-    );
+    if (doc.iframe) {
+        showPageInIframe(panel.webview, doc.link);
+        return;
+    }
+    showGithubReadme(panel.webview, doc.name)
 }
 
-function getWebviewContent(url: string) {
-  return `<!DOCTYPE html>
+function showPageInIframe(webview: vscode.Webview, url: string) {
+    webview.html = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cat Coding</title>
+    <title>Docs Finder</title>
 		<style type="text/css">
 			iframe {
 				position: absolute;
@@ -78,22 +58,7 @@ function getWebviewContent(url: string) {
 		</style>
 </head>
 <body>
-		<iframe id="cf" src="${url}"></iframe>
-		<script>
-const vscode = acquireVsCodeApi();
-const iframe = document.getElementById('cf');
-
-window.addEventListener('message', function(event) {
-	// just relay message
-	const message = event.data;
-	if (message.type === 'setState' || message.type === 'getState' || message.type === 'copy' || message.type === 'openBrowser') {
-		vscode.postMessage(message)
-	}
-	if (message.type === 'loadState') {
-		iframe.contentWindow.postMessage(message, '*')
-	}
-});
-		</script>
+    <iframe id="cf" src="${url}"></iframe>
 </body>
 </html>`;
 }

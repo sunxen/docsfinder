@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import mainList, { DocItem } from './docs'
 import { getProjectPkgs } from './npm-helper';
-import { openWeb } from './web';
+import { openDoc } from './web';
 
 const docQuickPickMap = new Map<vscode.QuickPickItem, DocItem>();
 
@@ -54,7 +54,7 @@ async function updateItemsWithContext() {
 				label: pkg,
 			}
 			const doc = { name: pkg, link: `https://www.npmjs.com/package/${pkg}` }
-			pkgItems.push();
+			pkgItems.push(qp);
 			docQuickPickMap.set(qp, doc)
 		}
 	});
@@ -80,11 +80,7 @@ export function activate(context: vscode.ExtensionContext) {
 			const qp = selection[0]
 			const doc = docQuickPickMap.get(qp);
 			if (doc) {
-				if (viewerType === 'Browser' || !doc.iframe) {
-					vscode.env.openExternal(vscode.Uri.parse(doc.link));
-				} else {
-					openWeb(context, doc.link, doc.name, viewerType === 'VS Code - column one')
-				}
+				openDoc(doc, viewerType);
 			}
 			quickPick.hide();
 		});
