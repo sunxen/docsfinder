@@ -4,6 +4,9 @@ All notable changes to the "docsfinder" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.3.0]
+- Add option "Homepage in github": get repo readme from github, and render it in vscode
+
 ## [0.2.0]
 - Open docs in vscode or system browser
 

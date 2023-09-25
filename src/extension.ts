@@ -65,6 +65,25 @@ async function updateItemsWithContext() {
 	return false;
 }
 
+let hasTailItem = false;
+
+function updateTailItem(name: string) {
+	if (hasTailItem) {
+		qpItems.pop();
+		hasTailItem = false;
+	}
+	if (!name || name.includes(' ')) {
+		return;
+	}
+	const doc = { name: name, link: `https://www.npmjs.com/package/${name}` }
+	const qp = {
+		label: 'Homepage in github: ' + name,
+	}
+	docQuickPickMap.set(qp, doc);
+	qpItems.push(qp);
+	hasTailItem = true;
+}
+
 export function activate(context: vscode.ExtensionContext) {
 	let disposable = vscode.commands.registerCommand('docsfinder.open', () => {
 		const viewerType = vscode.workspace.getConfiguration('docsFinder').viewerType;
@@ -76,6 +95,12 @@ export function activate(context: vscode.ExtensionContext) {
 			quickPick.value = selection;
 		}
 		quickPick.items = qpItems;
+
+		quickPick.onDidChangeValue(async (value) => {
+			updateTailItem(value);
+			quickPick.items = qpItems;
+		});
+		
 		quickPick.onDidChangeSelection(selection => {
 			const qp = selection[0]
 			const doc = docQuickPickMap.get(qp);
