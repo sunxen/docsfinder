@@ -6,7 +6,7 @@ export default [
   },
   {
     "name": "Vue",
-        "link": "https://vuejs.org/guide/introduction.html"
+    "link": "https://vuejs.org/guide/introduction.html"
   },
   {
     "name": "Vite",
@@ -23,7 +23,6 @@ export default [
     "name": "Next.js",
     "alias": "Next",
     "npm": "next",
-    "iframe": true,
     "link": "https://nextjs.org/docs"
   },
   {

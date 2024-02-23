@@ -301,6 +301,10 @@ export default [
     "link": "https://tailwindcss.com/docs/max-height"
   },
   {
+    "name": "Size",
+    "link": "https://tailwindcss.com/docs/size"
+  },
+  {
     "name": "Font Family",
     "link": "https://tailwindcss.com/docs/font-family"
   },
@@ -383,6 +387,10 @@ export default [
   {
     "name": "Text Overflow",
     "link": "https://tailwindcss.com/docs/text-overflow"
+  },
+  {
+    "name": "Text Wrap",
+    "link": "https://tailwindcss.com/docs/text-wrap"
   },
   {
     "name": "Text Indent",
@@ -730,7 +738,7 @@ export default [
     "link": "https://tailwindcss.com/docs/screen-readers"
   },
   {
-    "name": "Typography",
-    "link": "https://tailwindcss.com/docs/typography-plugin"
+    "name": "Forced Color Adjust",
+    "link": "https://tailwindcss.com/docs/forced-color-adjust"
   }
 ]
